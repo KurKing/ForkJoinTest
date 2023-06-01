@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.RecursiveTask;
 
-public class ProcessWordsTask extends RecursiveTask<Map<String, Word>> {
+public class ProcessWordsTask extends RecursiveTask<HashMap<String, Word>> {
 
     private final static int amountOfWordsToProcess = 10000;
 
@@ -19,7 +19,7 @@ public class ProcessWordsTask extends RecursiveTask<Map<String, Word>> {
     }
 
     @Override
-    protected Map<String, Word> compute() {
+    protected HashMap<String, Word> compute() {
 
         if (wordsLength < amountOfWordsToProcess) {
 
@@ -29,7 +29,7 @@ public class ProcessWordsTask extends RecursiveTask<Map<String, Word>> {
         return createRecursiveTasks(words);
     }
 
-    private Map<String, Word> createRecursiveTasks(List<String> words) {
+    private HashMap<String, Word> createRecursiveTasks(List<String> words) {
 
         var leftSubList = new ProcessWordsTask(words.subList(0, wordsLength / 2));
         var rightSubList = new ProcessWordsTask(words.subList(wordsLength / 2, wordsLength));
@@ -40,9 +40,9 @@ public class ProcessWordsTask extends RecursiveTask<Map<String, Word>> {
         return mergeResults(leftSubList.join(), rightSubList.join());
     }
 
-    private Map<String, Word> processText(List<String> words) {
+    private HashMap<String, Word> processText(List<String> words) {
 
-        Map<String, Word> result = new HashMap<>();
+        HashMap<String, Word> result = new HashMap<>();
 
         for (String word: words) {
 
@@ -63,7 +63,7 @@ public class ProcessWordsTask extends RecursiveTask<Map<String, Word>> {
         return result;
     }
 
-    private Map<String, Word> mergeResults(Map<String, Word> lhs, Map<String, Word> rhs) {
+    private HashMap<String, Word> mergeResults(HashMap<String, Word> lhs, HashMap<String, Word> rhs) {
 
         for (Map.Entry<String, Word> entry : rhs.entrySet()) {
 
