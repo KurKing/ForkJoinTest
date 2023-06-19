@@ -3,6 +3,7 @@ package resourses;
 public class ResourcesPath {
 
     public static final String bigFilePath = "/Users/oleksii/Documents/Java/ForkJoinTest/ForkJoin/src/resourses/big.txt";
+    public static final String smallFilePath = "/Users/oleksii/Documents/Java/ForkJoinTest/ForkJoin/src/resourses/small.txt";
 
     public static final String whatIsLoremIpsumName = "What is Lorem Ipsum.txt";
     public static final String whyUseLoremIpsumName = "Why do we use Lorem Ipsum.txt";
