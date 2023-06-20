@@ -3,10 +3,7 @@ package fox;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class FoxCalculator {
 
@@ -22,7 +19,7 @@ public class FoxCalculator {
         for (var i = 0; i < processNumber; i++) {
             for (var j = 0; j < processNumber; j++) {
 
-                List<Matrix> blockNeedsToBeAdded = getBlocks(matrix1, matrix2, blockSize, i, j, processNumber);
+                List<Matrix> blockNeedsToBeAdded = getBlocks(pool, matrix1, matrix2, blockSize, i, j, processNumber);
 
                 pool.submit(new FoxBlockAddingAction(blockNeedsToBeAdded, resultRows, i*blockSize, j*blockSize));
             }
@@ -38,12 +35,12 @@ public class FoxCalculator {
         return new Result(result);
     }
 
-    private static List<Matrix> getBlocks(Matrix matrix1, Matrix matrix2,
+    private static List<Matrix> getBlocks(ForkJoinPool pool,
+                                          Matrix matrix1, Matrix matrix2,
                                           int blockSize, int fromIndex, int tillIndex, int processNumber) throws InterruptedException {
 
-        ForkJoinPool pool = new ForkJoinPool(8);
-
         List<Matrix> blocks = Collections.synchronizedList(new ArrayList<>());
+        List<ForkJoinTask> multiplierActions = new ArrayList<>();
 
         for (int block = 0; block < processNumber; block++) {
 
@@ -54,11 +51,14 @@ public class FoxCalculator {
             FoxBlock leftBlock = new FoxBlock(leftStartRow, startC, leftStartRow + blockSize, startC + blockSize);
             FoxBlock rightBlock = new FoxBlock(startC, rightStartColumn, startC + blockSize, rightStartColumn + blockSize);
 
-            pool.submit(new FoxBlockMultiplierAction(blocks, matrix1, matrix2, leftBlock, rightBlock));
+            var action = pool.submit(new FoxBlockMultiplierAction(blocks, matrix1, matrix2, leftBlock, rightBlock));
+            multiplierActions.add(action);
         }
 
-        pool.shutdown();
-        pool.awaitTermination(100L, TimeUnit.SECONDS);
+        for (var action: multiplierActions) {
+
+            action.join();
+        }
 
         return blocks;
     }
