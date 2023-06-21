@@ -1,8 +1,6 @@
 package words.length;
 
 import words.Word;
-import words.length.SumWordsLengthTask;
-
 import java.util.List;
 
 public class VarianceSumWordsLengthTask extends SumWordsLengthTask {

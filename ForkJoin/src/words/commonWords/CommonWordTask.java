@@ -1,7 +1,6 @@
 package words.commonWords;
 
 import words.Word;
-
 import java.util.*;
 import java.util.concurrent.RecursiveTask;
 

@@ -1,7 +1,6 @@
 package words.length;
 
 import words.Word;
-
 import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 

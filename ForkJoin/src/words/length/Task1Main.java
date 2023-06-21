@@ -3,7 +3,6 @@ package words.length;
 import resourses.ResourcesPath;
 import words.*;
 import words.ProcessWordsTask;
-
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;

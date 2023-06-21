@@ -1,13 +1,11 @@
 package words.keyWords;
 
 import resourses.ResourcesPath;
-import words.commonWords.CommonWordsFilesProcessor;
-
+import java.io.FileNotFoundException;
 import java.util.Set;
 
 public class Task4Main {
-
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, FileNotFoundException {
 
         Set<String> fileNames = Set.of(
                 ResourcesPath.whyUseLoremIpsumName,
